@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# Build artifacts
+build/
+*.o
+
+# Local Claude settings
+.claude/settings.local.json
+
+# FS-UAE directory-hard-drive metadata (regenerated each run)
+*.uaem
+
+# Generated FS-UAE run target — staged by scripts/build.sh from
+# src/assets/uae/ (skeleton) + vendor/ (ROM, mathtrans.library) + the built binary.
+# Anchored to the repo root so it does NOT also ignore the src/assets/uae/ skeleton.
+/uae/

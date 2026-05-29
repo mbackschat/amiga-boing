@@ -1,0 +1,44 @@
+; WinUAE config for the Amiga Boing demo  (A500 / Kickstart 2.04 / OCS)
+; ---------------------------------------------------------------------------
+; Counterpart to boing.fs-uae (FS-UAE). Provided for Windows users; it is
+; UNTESTED on this repo's macOS dev box, so see the PATHS note at the bottom if
+; WinUAE can't find the ROM or drives.
+;
+; NOTE: this is a TEMPLATE - scripts/build.sh substitutes @@KICKSTART@@ for the
+; default ROM filename (Kickstart 2.04 if vendor/ has it, else the required 1.3)
+; when staging uae\boing.uae. To force 1.3, set kickstart_rom_file to rom\kick13.rom.
+;
+; Mirrors the FS-UAE harness: plain A500 at real 7 MHz, 512 KB chip, OCS, with
+; two *directory* hard drives (no .adf/.hdf needed) - DH0 boots s/startup-sequence
+; (just "sys:boing") and a second volume labelled LIBS so LIBS:mathtrans.library
+; resolves without an Amiga `Assign`. The demo auto-starts; close WinUAE to quit.
+
+config_description=Amiga Boing (A500, OCS)
+config_hardware=true
+
+; --- ROM (default chosen by build.sh; both staged into uae\rom\ when available) ---
+kickstart_rom_file=.\rom\@@KICKSTART@@
+
+; --- machine: plain A500 at real speed (keeps the one-step-per-field tempo) ---
+chipset=ocs
+chipset_compatible=A500
+cpu_model=68000
+cpu_speed=real
+chipmem_size=1
+bogomem_size=0
+fastmem_size=0
+ntsc=false
+
+; --- directory hard drives ---
+; DH0 boots (bootpri 0); LIBS is a non-booting volume (bootpri -128) that only
+; exists so LIBS: resolves, exactly like hard_drive_1_label=LIBS in the FS-UAE config.
+uaehf0=dir,rw,DH0:DH0:.\dh0,0
+uaehf1=dir,rw,LIBS:LIBS:.\dh0\libs,-128
+
+; --- host window ---
+gfx_fullscreen_amiga=false
+
+; PATHS: WinUAE resolves relative paths against its own working directory, not
+; against this file. If the ROM/drives aren't found, either (a) start WinUAE with
+; this uae\ folder as the working directory, or (b) replace the three ".\..."
+; paths above with absolute paths to uae\rom\kick204.rom, uae\dh0 and uae\dh0\libs.

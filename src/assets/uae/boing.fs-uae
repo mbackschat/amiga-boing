@@ -1,0 +1,27 @@
+[fs-uae]
+# Self-contained FS-UAE config for the Boing demo (A500 / OCS).
+# NOTE: this is a TEMPLATE - scripts/build.sh substitutes @@KICKSTART@@ for the
+# default ROM filename when staging uae/boing.fs-uae (don't run this copy directly).
+# All paths are repo-relative ($CONFIG = this file's directory = the generated
+# uae/ target), so no machine-specific FS-UAE setup is needed beyond installing
+# FS-UAE itself. scripts/build.sh stages uae/ from src/assets/uae/ + vendor/.
+#
+# Default ROM = Kickstart 2.04 when vendor/ has it, else the required 1.3. 2.04 is
+# preferred because on Kickstart 2.0+ the boot shell is windowless, so the ball
+# screen shows IMMEDIATELY (no Workbench/CLI screen in front to drag down) and the
+# version-gated fix keeps it at the full field rate (docs/DEVIATIONS.md Deviation
+# #2). To force the original 1.3 instead, use `scripts/run.sh 13` (see "Running on
+# Kickstart 1.3" in docs/RUNNING.md). FS-UAE forces PAL for this OCS A500.
+#
+# dh0/ boots via s/startup-sequence (just "sys:boing"); the demo auto-starts and
+# runs until you close the window. dh0/libs is mounted as the LIBS: volume so
+# boing can load mathtrans.library without an Amiga `Assign` command. The
+# Kickstart ROMs and mathtrans.library come from the private vendor/ submodule
+# (copied in by the build). See docs/RUNNING.md.
+amiga_model = A500
+kickstart_file = $CONFIG/rom/@@KICKSTART@@
+hard_drive_0 = $CONFIG/dh0
+hard_drive_1 = $CONFIG/dh0/libs
+hard_drive_1_label = LIBS
+automatic_input_grab = 0
+fullscreen = 0
